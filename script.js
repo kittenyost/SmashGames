@@ -108,6 +108,11 @@ const data = {
     
 }
 
-const json = JSON.stringify(data);
+let page = data. pages[1];
+//we need a handle on the title
+ document.title = data.brandName +" - " +data.pages[1].pageName;
+// get access to the branding and change to data.brandName
+document.getElementById("brand").innerHTML = data.brandName.toUpperCase();
 
-console.log(JSON.parse(json));
+//get access to the page title h1 and change it to page.pageName
+document.getElementById("pageName").innerHTML = page.pageName;
