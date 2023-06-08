@@ -105,14 +105,87 @@ const data = {
             ],
         }
     ]
-    
 }
 
-let page = data. pages[1];
-//we need a handle on the title
- document.title = data.brandName +" - " +data.pages[1].pageName;
+let page = data.pages[1];
+
+// get the main container
+let container = document.getElementById("main");
+
+document.title = data.brandName + " - " + page.pageName;
 // get access to the branding and change to data.brandName
 document.getElementById("brand").innerHTML = data.brandName.toUpperCase();
 
-//get access to the page title h1 and change it to page.pageName
+// get access to the page title h1 and change it to page.pageName
 document.getElementById("pageName").innerHTML = page.pageName;
+
+// This is the code to create blocks
+
+/* <div class="call-to-action">
+    <img src="images/Inferno-Jumbotron.png" alt="Inferno Blast Gameplay" />
+    <br />
+    <a class="btn" href="https://steampowered.com" target="_blank">Buy Now on Steam! <i class="fa-brands fa-steam-symbol"></i></a>
+</div> */
+
+createPage(page.blocks);
+
+function createPage(blocks) {
+    for (let i = 0; i < blocks.length; i++) {
+        let currentBlock = blocks[i];
+        if (currentBlock.type == "call-to-action") {
+            createCallToAction(currentBlock);
+        } else if (currentBlock.type == "description") {
+            createDescription(currentBlock);
+        } else {
+            console.log("no block template found");
+        }
+    }
+}
+
+function createImage(imgData) {
+    let img = document.createElement("img");
+    img.src = imgData.src;
+    img.alt = imgData.alt;
+
+    return img;
+}
+
+function createButtonLink(linkData) {
+    let link = document.createElement("a");
+    link.classList.add("btn");
+    link.href = linkData.buttonLinkSrc;
+    link.target = "_blank";
+    link.innerHTML = linkData.buttonLinkText + ' <i class="fa-brands fa-steam-symbol"></i>';
+    return link;
+}
+
+function createCallToAction(blockData) {
+    // create our block
+    let block = document.createElement("div");
+    block.classList.add("call-to-action");
+    
+    // add our image
+    block.appendChild(createImage(blockData));
+    // add our break
+    block.appendChild(document.createElement("br"));
+    // add our call to action button
+    block.appendChild(createButtonLink(blockData));
+
+    // add our block to main
+    container.appendChild(block);
+}
+
+function createDescription(blockData) {
+    // create our block
+    let block = document.createElement("div");
+    block.classList.add("description", "block", "accent-color");
+
+    // add some text here
+    let description = document.createElement("p");
+    description.classList.add("description-text");
+    description.innerText = blockData.text;
+    block.appendChild(description);
+
+    // add our block to main
+    container.appendChild(block);
+}
