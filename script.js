@@ -119,15 +119,9 @@ document.getElementById("brand").innerHTML = data.brandName.toUpperCase();
 // get access to the page title h1 and change it to page.pageName
 document.getElementById("pageName").innerHTML = page.pageName;
 
-// This is the code to create blocks
-
-/* <div class="call-to-action">
-    <img src="images/Inferno-Jumbotron.png" alt="Inferno Blast Gameplay" />
-    <br />
-    <a class="btn" href="https://steampowered.com" target="_blank">Buy Now on Steam! <i class="fa-brands fa-steam-symbol"></i></a>
-</div> */
-
+// creating all of the blocks on the page
 createPage(page.blocks);
+
 
 function createPage(blocks) {
     for (let i = 0; i < blocks.length; i++) {
@@ -136,6 +130,8 @@ function createPage(blocks) {
             createCallToAction(currentBlock);
         } else if (currentBlock.type == "description") {
             createDescription(currentBlock);
+        } else if (currentBlock.type == "deck") {
+            createDeck(currentBlock);
         } else {
             console.log("no block template found");
         }
@@ -187,5 +183,47 @@ function createDescription(blockData) {
     block.appendChild(description);
 
     // add our block to main
+    container.appendChild(block);
+}
+
+function createDeck(blockData) {
+
+    // creating the feature div
+    let block = document.createElement("div");
+    block.classList.add("features");
+
+    let deck = document.createElement("div");
+    deck.classList.add("deck");
+    block.appendChild(deck);
+
+    /* <div class="card">
+            <img src="images/Inferno/Inferno-2-short.png" alt="placeholder">
+            <div class="card-body">
+                <h3>Dynamic Environments</h3>
+                <p>Navigate through a variety of fiery landscapes, including lava pits, crumbling ruins, and demonic strongholds.</p>
+            </div>
+        </div> */
+
+    for (let i = 0; i < blockData.cards.length; i++) {
+        let card = document.createElement("div");
+        card.classList.add("card");
+        card.appendChild(createImage({ 
+            src: blockData.cards[i].src,
+            alt: blockData.cards[i].altText
+        }));
+
+        let body = document.createElement("div");
+        body.classList.add("card-body");
+        card.appendChild(body);
+        let title = document.createElement("h3");
+        title.innerHTML = blockData.cards[i].title;
+        let text = document.createElement("p");
+        text.innerHTML = blockData.cards[i].body;
+
+        body.appendChild(title);
+        body.appendChild(text);
+        deck.appendChild(card);
+    }
+
     container.appendChild(block);
 }
